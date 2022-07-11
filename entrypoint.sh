@@ -65,6 +65,20 @@ configure_runner() {
     RUNNER_TOKEN=$(echo "${_TOKEN}" | jq -r .token)
   fi
 
+  if [ -n "${EPHEMERAL}" ]; then
+    echo "Ephemeral option is enabled"
+    _EPHEMERAL="--ephemeral"
+  else
+    _EPHEMERAL=""
+  fi
+
+  if [ -n "${DISABLE_AUTO_UPDATE}" ]; then
+    echo "Disable auto update option is enabled"
+    _AUTO_UPDATE="--disableupdate"
+  else
+    _AUTO_UPDATE=""
+  fi
+
   echo "Configuring"
   ./config.sh \
       --url "${_SHORT_URL}" \
@@ -74,7 +88,9 @@ configure_runner() {
       --labels "${_LABELS}" \
       --runnergroup "${_RUNNER_GROUP}" \
       --unattended \
-      --replace
+      --replace \
+      ${_EPHEMERAL} \
+      ${_AUTO_UPDATE}
 }
 
 
